@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Szótár</string>
+    
+    <!-- Szótár intent -->
+    <string name="vocabulary_new">Szótár rögzítése</string>
+    <string name="vocabulary_update">Szótár módosítása</string>
+    <string name="vocabulary_name">Adj nevet a szótárnak</string>
+
+    <!-- Kvíz intent -->
+    <string name="quiz_title">-</string>
+    <string name="actual_word">Aktuális szó</string>
+    <string name="guess_the_word">Mi a szó jelentése?</string>
+    <string name="button_title">IGEN</string>
+    <string name="stat_title">-</string>
+
+</resources>
