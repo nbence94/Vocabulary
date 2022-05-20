@@ -16,11 +16,12 @@ import java.util.stream.Collectors;
 import se.app.vocabulary.adapters.VocabularyAdapter;
 import se.app.vocabulary.controller.Controller;
 import se.app.vocabulary.model.Vocabulary;
+import se.app.vocabulary.sites.QuizActivity;
 import se.app.vocabulary.sites.VocabularyActivity;
 
 public class MainActivity extends AppCompatActivity {
 
-    FloatingActionButton add_new_vocabulary_btn;
+    FloatingActionButton add_new_vocabulary_btn, start_complete_quiz_btn;
     RecyclerView recycler_view;
     VocabularyAdapter adapter;
     Controller controller = new Controller(this);
@@ -37,6 +38,14 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, VocabularyActivity.class);
             startActivity(intent);
         });
+
+        start_complete_quiz_btn = findViewById(R.id.main_start_complete_quiz);
+        start_complete_quiz_btn.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, QuizActivity.class);
+            intent.putExtra("name", "Összesített szavak");
+            startActivity(intent);
+        });
+
 
         recycler_view = findViewById(R.id.main_recycler_gui);
         loadList();

@@ -58,8 +58,6 @@ public class VocabularyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vocabulary);
 
-
-
         back_button = findViewById(R.id.vocabulary_back_btn_gui);
         title = findViewById(R.id.vocabulary_title_gui);
         input_name= findViewById(R.id.vocabulary_name_gui);
@@ -70,6 +68,7 @@ public class VocabularyActivity extends AppCompatActivity {
 
         back_button.setOnClickListener(v -> {
             Intent intent = new Intent(VocabularyActivity.this, MainActivity.class);
+            finish();
             startActivity(intent);
         });
 
@@ -98,7 +97,7 @@ public class VocabularyActivity extends AppCompatActivity {
             et_dialog.setPositiveButton("Oké", (dialog, whichButton) -> {
 
                 if(!en_word.getText().toString().equals("") && !hun_word.getText().toString().equals("")) {
-                    list.add(new Words(list.size(), en_word.getText().toString(), hun_word.getText().toString()));
+                    list.add(new Words(list.size(), en_word.getText().toString().trim(), hun_word.getText().toString().trim()));
                     Log.i(LOG_TITLE, "Új szó felvéve!");
                     loadRecyclerView();
                 }

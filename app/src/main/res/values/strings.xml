@@ -11,6 +11,6 @@
     <string name="actual_word">Aktuális szó</string>
     <string name="guess_the_word">Mi a szó jelentése?</string>
     <string name="button_title">IGEN</string>
-    <string name="stat_title">-</string>
+    <string name="stat_title">-/-</string>
 
 </resources>

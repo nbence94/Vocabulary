@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 import se.app.vocabulary.R;
+import se.app.vocabulary.controller.Controller;
 import se.app.vocabulary.model.Vocabulary;
 import se.app.vocabulary.model.Words;
 import se.app.vocabulary.sites.QuizActivity;
@@ -26,11 +27,13 @@ public class VocabularyAdapter extends RecyclerView.Adapter<VocabularyAdapter.My
     ArrayList<Vocabulary> list;
     Context context;
     Activity activity;
+    Controller controller;
 
     public VocabularyAdapter(Activity activity, Context context, ArrayList<Vocabulary> list) {
         this.context = context;
         this.activity = activity;
         this.list = list;
+        controller = new Controller(context);
     }
 
     @NonNull
@@ -46,6 +49,9 @@ public class VocabularyAdapter extends RecyclerView.Adapter<VocabularyAdapter.My
     public void onBindViewHolder(@NonNull VocabularyAdapter.MyViewHolder holder, int position) {
         String element_text = list.get(position).getName();
         holder.title.setText(element_text);
+
+        String number = "" + controller.getNumberOfWords(list.get(position).getId());
+        holder.amount_of_words.setText(number);
 
         holder.element.setOnClickListener(v -> {
             Intent quiz = new Intent(activity, QuizActivity.class);
@@ -73,13 +79,14 @@ public class VocabularyAdapter extends RecyclerView.Adapter<VocabularyAdapter.My
     public static class MyViewHolder extends RecyclerView.ViewHolder {
 
         CardView element;
-        TextView title;
+        TextView title, amount_of_words;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
             element = itemView.findViewById(R.id.element_gui);
             title = itemView.findViewById(R.id.element_text_gui);
+            amount_of_words = itemView.findViewById(R.id.more_info_gui);
 
         }
     }

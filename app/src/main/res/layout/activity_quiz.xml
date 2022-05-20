@@ -7,6 +7,18 @@
     tools:context=".sites.QuizActivity"
     android:background="@drawable/bg1" >
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/quiz_check_button_gui"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="284dp"
+        android:layout_marginEnd="28dp"
+        android:clickable="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/done_icon"
+        tools:ignore="SpeakableTextPresentCheck" />
+
     <ImageView
         android:id="@+id/quiz_back_btn_gui"
         android:layout_width="wrap_content"
@@ -35,13 +47,35 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="@string/stat_title"
         android:textSize="25sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/agree_button_gui" />
+        app:layout_constraintTop_toBottomOf="@+id/scores_gui" />
+
+    <TextView
+        android:id="@+id/scores_gui"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/stat_title"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/guess_the_word_gui" />
+
+    <TextView
+        android:id="@+id/number_of_words"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:layout_marginBottom="80dp"
+        android:text="Szavak száma: 23"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toTopOf="@+id/actual_word_gui"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/actual_word_gui"
@@ -73,30 +107,30 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/actual_word_gui" />
 
-    <Button
-        android:id="@+id/agree_button_gui"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="@string/button_title"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/guess_the_word_gui" />
-
     <LinearLayout
         android:id="@+id/mistakes_list_gui"
         android:layout_width="match_parent"
+        android:layout_height="200dp"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
-        android:layout_height="200dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginBottom="32dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/words_stat_gui"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintHorizontal_bias="0.533"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/hint_button_gui"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="12dp"
+        android:clickable="true"
+        android:scaleType="center"
+        app:fabSize="mini"
+        app:layout_constraintBottom_toBottomOf="@+id/quiz_check_button_gui"
+        app:layout_constraintEnd_toStartOf="@+id/quiz_check_button_gui"
+        app:srcCompat="@drawable/hint_icon" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -54,7 +54,7 @@ public class Controller {
 
     public ArrayList<Words> getWords() {
         ArrayList<Words> list = new ArrayList<>();
-        Cursor c = dh.getDatas("SELECT * FROM " + dh.WORDS);
+        Cursor c = dh.getDatas("SELECT * FROM " + dh.WORDS + " ORDER BY English;");
         if(c.getCount() == 0) {
             Log.e(LOG_TITLE, "Sikertelen adatlekérdezés. (" + dh.WORDS + ")");
         }
@@ -69,7 +69,7 @@ public class Controller {
 
     public ArrayList<Words> getWords(int vocabularyID) {
         ArrayList<Words> list = new ArrayList<>();
-        Cursor c = dh.getDatas("SELECT * FROM Words w JOIN Connection c ON c.WordID = w.ID WHERE c.VocabularyID = " + vocabularyID);
+        Cursor c = dh.getDatas("SELECT * FROM Words w JOIN Connection c ON c.WordID = w.ID WHERE c.VocabularyID = " + vocabularyID + " ORDER BY English;");
 
         if(c.getCount() == 0) {
             Log.e(LOG_TITLE, "Sikertelen adatlekérdezés. (" + dh.WORDS + ")");
@@ -81,6 +81,11 @@ public class Controller {
             }
         }
         return list;
+    }
+
+    public int getNumberOfWords(int vocabularyId) {
+        ArrayList<Words> list = getWords(vocabularyId);
+        return list.size();
     }
 
     public ArrayList<Words> getData(String query) {
