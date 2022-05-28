@@ -22,12 +22,14 @@ import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import se.app.vocabulary.MainActivity;
 import se.app.vocabulary.R;
 import se.app.vocabulary.adapters.WordsAdapter;
 import se.app.vocabulary.controller.Controller;
 import se.app.vocabulary.data.DatabaseHelper;
+import se.app.vocabulary.model.Connection;
 import se.app.vocabulary.model.Words;
 
 public class VocabularyActivity extends AppCompatActivity {
@@ -42,7 +44,8 @@ public class VocabularyActivity extends AppCompatActivity {
     FloatingActionButton save_button;
     Button add_new;
 
-    ArrayList<Words> list = new ArrayList<>();
+    ArrayList<Words> wordList = new ArrayList<>();
+    ArrayList<Connection> connectionList = new ArrayList<>();
 
     //RecyclerView
     RecyclerView recyclerView;
@@ -51,7 +54,6 @@ public class VocabularyActivity extends AppCompatActivity {
     //Szerkesztés rész
     boolean update_mode = false;
     int vocabulary_id = -1;
-    String vocabulary_name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,7 +99,7 @@ public class VocabularyActivity extends AppCompatActivity {
             et_dialog.setPositiveButton("Oké", (dialog, whichButton) -> {
 
                 if(!en_word.getText().toString().equals("") && !hun_word.getText().toString().equals("")) {
-                    list.add(new Words(list.size(), en_word.getText().toString().trim(), hun_word.getText().toString().trim()));
+                    wordList.add(new Words(wordList.size(), en_word.getText().toString().trim(), hun_word.getText().toString().trim()));
                     Log.i(LOG_TITLE, "Új szó felvéve!");
                     loadRecyclerView();
                 }
@@ -122,12 +124,13 @@ public class VocabularyActivity extends AppCompatActivity {
                 Toast.makeText(this, "Adj nevet a szótárnak!", Toast.LENGTH_SHORT).show();
                 return;
             }
-            if(list.size() == 0) {
+            if(wordList.size() == 0) {
                 Toast.makeText(this, "Tegyél bele legalább 1 szót!", Toast.LENGTH_SHORT).show();
                 return;
             }
 
             if(!update_mode) {
+                //Ha újat hozunk létre
                 if (dh.insert(dh.VOCABULARY, new String[]{vocabulary_name}))
                     vocabulary_id = controller.getTheNewID(dh.VOCABULARY);
                 else {
@@ -137,23 +140,31 @@ public class VocabularyActivity extends AppCompatActivity {
                 }
                 Log.i(LOG_TITLE, "Az új szótár ID: " + vocabulary_id);
             } else {
+                //On update
+                //First: update vocabulary
                 if (!dh.update(dh.VOCABULARY, "ID", new String[]{vocabulary_name}, String.valueOf(vocabulary_id))) {
                     Log.e(LOG_TITLE, "Nem sikerült menteni a szótárat!");
                     Toast.makeText(this, "Mentés sikertelen!", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                dh.delete(dh.CONNECT, "VocabularyID", String.valueOf(vocabulary_id));
+                //Second: we remove all connections related to vocabulary
+                /*if(!dh.delete(dh.CONNECT, "VocabularyID", String.valueOf(vocabulary_id))) {
+                    Log.e(LOG_TITLE, "Nem sikerült törölni a kapcsolatokat");
+                }*/
+                if(!deleteConnections(connectionList)) {
+                    Log.e(LOG_TITLE, "Nem sikerült törölni a kapcsolatokat");
+                }
             }
 
-            for (int i = 0; i < list.size(); i++) {
-                dh.insert(dh.WORDS, new String[]{list.get(i).getEnglish(), list.get(i).getHungarian()});
+            for (int i = 0; i < wordList.size(); i++) {
+                dh.insert(dh.WORDS, new String[]{wordList.get(i).getEnglish(), wordList.get(i).getHungarian()});
                 dh.insert(dh.CONNECT, new String[]{String.valueOf(controller.getTheNewID(dh.WORDS)), String.valueOf(vocabulary_id)});
             }
 
 
             Toast.makeText(this, "Sikeres mentés!", Toast.LENGTH_SHORT).show();
-            Log.i(LOG_TITLE, "NEW-VOCABULARY: id(" + vocabulary_id + "), elemek-száma(" + list.size() + ")");
+            Log.i(LOG_TITLE, "NEW-VOCABULARY: id(" + vocabulary_id + "), elemek-száma(" + wordList.size() + ")");
             Intent intent = new Intent(VocabularyActivity.this, MainActivity.class);
             startActivity(intent);
             finish();
@@ -169,10 +180,21 @@ public class VocabularyActivity extends AppCompatActivity {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                list.remove(viewHolder.getAdapterPosition());
+                wordList.remove(viewHolder.getAdapterPosition());
                 adapter.notifyDataSetChanged();
             }
         }).attachToRecyclerView(recyclerView);
+    }
+
+
+    private boolean deleteConnections(List<Connection> connections) {
+        String wordid;
+        for(int i = 0; i < connections.size(); i++) {
+            wordid = String.valueOf(connections.get(i).getWord_id());
+            dh.delete(dh.CONNECT, "WordID", wordid);
+            dh.delete(dh.WORDS, "ID", wordid);
+        }
+        return true;
     }
 
     private void GetIntentData() {
@@ -182,12 +204,13 @@ public class VocabularyActivity extends AppCompatActivity {
             vocabulary_id = getIntent().getIntExtra("id", -1);
             input_name.setText(getIntent().getStringExtra("name"));
             Log.i(LOG_TITLE, "VOCABULARY-UPDATE-ID: " + vocabulary_id);
-            list = controller.getWords(vocabulary_id);
+            wordList = controller.getWords(vocabulary_id);
+            connectionList = controller.getConnections(vocabulary_id);
         }
     }
 
     private void loadRecyclerView() {
-        adapter = new WordsAdapter(this, list);
+        adapter = new WordsAdapter(this, wordList);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }

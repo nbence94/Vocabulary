@@ -119,4 +119,20 @@ public class Controller {
         return list;
     }
 
+    public ArrayList<Connection> getConnections(int vocabularyID) {
+        ArrayList<Connection> list = new ArrayList<>();
+        Cursor c = dh.getDatas("SELECT * FROM " + dh.CONNECT + " WHERE VocabularyID = " + vocabularyID + ";");
+
+        if(c.getCount() == 0) {
+            Log.e(LOG_TITLE, "Sikertelen adatlekérdezés. (" + dh.CONNECT + ")");
+        }
+        else
+        {
+            while(c.moveToNext()){
+                list.add(new Connection(Integer.parseInt(c.getString(0)), Integer.parseInt(c.getString(1))));
+            }
+        }
+        return list;
+    }
+
 }

@@ -86,7 +86,6 @@ public class QuizActivity extends AppCompatActivity {
             Random rnd = new Random();
             if(mod == 0) hint_word = list.get(chosen_word_id).getEnglish();
             else hint_word = list.get(chosen_word_id).getHungarian();
-            Log.e("DEBUG", hint_word);
 
             int random_number;
             for(int i = 0; i < hint_word.length(); i++) {
@@ -137,7 +136,7 @@ public class QuizActivity extends AppCompatActivity {
     private String chooseAWord() {
         Random r = new Random();
         chosen_word_id = r.nextInt(list.size());
-        Log.i(LOG_TITLE, "Random: " + chosen_word_id + " - Size:" + list.size());
+        Log.i(LOG_TITLE, "Chosen wordId: " + chosen_word_id + " - Size:" + list.size());
         mod = r.nextInt() % 2;
         if(mod == 0) {
             return list.get(chosen_word_id).getHungarian();
@@ -149,12 +148,12 @@ public class QuizActivity extends AppCompatActivity {
     private void getIntentData() {
         if(getIntent().hasExtra("id")) {
             vocabulary_id = getIntent().getIntExtra("id", -1);
-            title.setText(getIntent().getStringExtra("name"));
-            Log.i(LOG_TITLE, "QUIZ-ID: " + vocabulary_id);
+            Log.i(LOG_TITLE, "QUIZ-MODE: ONLY (" + vocabulary_id + ")");
             list = controller.getWords(vocabulary_id);
         } else {
-            Log.i(LOG_TITLE, "Minden szótár felhasználva");
+            Log.i(LOG_TITLE, "QUIZ-MODE: ALL");
             list = controller.getWords();
         }
+        title.setText(getIntent().getStringExtra("name"));
     }
 }

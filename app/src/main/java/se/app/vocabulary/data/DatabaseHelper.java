@@ -84,14 +84,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         long result = db.delete(table,first_column + "=?", new String[] {row_id});
 
-
         if(result == -1){
             Log.e(LOG_TITLE,"Adat törlése NEM sikerült! (" + table + ")");
             return false;
         }
         else
         {
-            Log.i(LOG_TITLE,"Adat feltöltése sikeres! (" + table + ")");
+            Log.i(LOG_TITLE,"Adat törlése sikeres! (" + table + ")");
             return true;
         }
     }
