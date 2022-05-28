@@ -8,7 +8,46 @@
     android:background="@drawable/bg1" >
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/exercises_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="40dp"
+        android:layout_marginBottom="40dp"
+        android:clickable="true"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/main_main_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/pencil_icon"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/main_add_vocabulary_gui"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
+        android:visibility="gone"
+        android:clickable="true"
+        app:layout_constraintBottom_toTopOf="@+id/main_main_button"
+        app:layout_constraintEnd_toStartOf="@+id/exercises_btn"
+        app:srcCompat="@drawable/add_icon"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/main_start_complete_quiz"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="32dp"
+        android:clickable="true"
+        android:visibility="gone"
+        app:layout_constraintEnd_toStartOf="@+id/main_main_button"
+        app:layout_constraintTop_toBottomOf="@+id/main_add_vocabulary_gui"
+        app:srcCompat="@drawable/all_quiz"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/main_main_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="40dp"
@@ -16,20 +55,7 @@
         android:clickable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/add_icon"
-        tools:ignore="SpeakableTextPresentCheck" />
-
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/main_start_complete_quiz"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="40dp"
-        android:layout_marginBottom="16dp"
-        android:clickable="true"
-        app:layout_constraintBottom_toTopOf="@+id/main_add_vocabulary_gui"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/all_quiz"
+        app:srcCompat="@drawable/menu_icon"
         tools:ignore="SpeakableTextPresentCheck" />
 
     <androidx.recyclerview.widget.RecyclerView
@@ -38,7 +64,8 @@
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" >
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
 
     </androidx.recyclerview.widget.RecyclerView>
 

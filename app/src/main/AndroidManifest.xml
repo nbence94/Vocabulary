@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Vocabulary">
         <activity
+            android:name=".sites.ExerciseActivity"
+            android:exported="false" />
+        <activity
             android:name=".sites.QuizActivity"
             android:exported="false" />
         <activity

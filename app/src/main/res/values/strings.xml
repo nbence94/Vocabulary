@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Szótár</string>
-    
+
     <!-- Szótár intent -->
     <string name="vocabulary_new">Szótár rögzítése</string>
     <string name="vocabulary_update">Szótár módosítása</string>
@@ -12,5 +12,9 @@
     <string name="guess_the_word">Mi a szó jelentése?</string>
     <string name="button_title">IGEN</string>
     <string name="stat_title">-/-</string>
+
+    <!-- Exercise intent -->
+    <string name="exercise_title">Mondat</string>
+
 
 </resources>

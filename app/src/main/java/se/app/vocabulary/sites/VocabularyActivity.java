@@ -27,7 +27,7 @@ import java.util.List;
 import se.app.vocabulary.MainActivity;
 import se.app.vocabulary.R;
 import se.app.vocabulary.adapters.WordsAdapter;
-import se.app.vocabulary.controller.Controller;
+import se.app.vocabulary.controller.Service;
 import se.app.vocabulary.data.DatabaseHelper;
 import se.app.vocabulary.model.Connection;
 import se.app.vocabulary.model.Words;
@@ -36,7 +36,7 @@ public class VocabularyActivity extends AppCompatActivity {
 
     private final String LOG_TITLE = "VocabularyActivity";
     DatabaseHelper dh = new DatabaseHelper(this);
-    Controller controller = new Controller(this);
+    Service service = new Service(this);
 
     ImageView back_button;
     TextView title;
@@ -132,7 +132,7 @@ public class VocabularyActivity extends AppCompatActivity {
             if(!update_mode) {
                 //Ha újat hozunk létre
                 if (dh.insert(dh.VOCABULARY, new String[]{vocabulary_name}))
-                    vocabulary_id = controller.getTheNewID(dh.VOCABULARY);
+                    vocabulary_id = service.getTheNewID(dh.VOCABULARY);
                 else {
                     Log.e(LOG_TITLE, "Nem sikerült menteni a szótárat!");
                     Toast.makeText(this, "Mentés sikertelen!", Toast.LENGTH_SHORT).show();
@@ -149,9 +149,6 @@ public class VocabularyActivity extends AppCompatActivity {
                 }
 
                 //Second: we remove all connections related to vocabulary
-                /*if(!dh.delete(dh.CONNECT, "VocabularyID", String.valueOf(vocabulary_id))) {
-                    Log.e(LOG_TITLE, "Nem sikerült törölni a kapcsolatokat");
-                }*/
                 if(!deleteConnections(connectionList)) {
                     Log.e(LOG_TITLE, "Nem sikerült törölni a kapcsolatokat");
                 }
@@ -159,7 +156,7 @@ public class VocabularyActivity extends AppCompatActivity {
 
             for (int i = 0; i < wordList.size(); i++) {
                 dh.insert(dh.WORDS, new String[]{wordList.get(i).getEnglish(), wordList.get(i).getHungarian()});
-                dh.insert(dh.CONNECT, new String[]{String.valueOf(controller.getTheNewID(dh.WORDS)), String.valueOf(vocabulary_id)});
+                dh.insert(dh.CONNECT, new String[]{String.valueOf(service.getTheNewID(dh.WORDS)), String.valueOf(vocabulary_id)});
             }
 
 
@@ -186,7 +183,11 @@ public class VocabularyActivity extends AppCompatActivity {
         }).attachToRecyclerView(recyclerView);
     }
 
-
+    /**
+     * Szavak alapján törli a csatlakozásokat
+     * @param connections
+     * @return
+     */
     private boolean deleteConnections(List<Connection> connections) {
         String wordid;
         for(int i = 0; i < connections.size(); i++) {
@@ -197,6 +198,7 @@ public class VocabularyActivity extends AppCompatActivity {
         return true;
     }
 
+
     private void GetIntentData() {
         if(getIntent().hasExtra("id")) {
             update_mode = true;
@@ -204,8 +206,8 @@ public class VocabularyActivity extends AppCompatActivity {
             vocabulary_id = getIntent().getIntExtra("id", -1);
             input_name.setText(getIntent().getStringExtra("name"));
             Log.i(LOG_TITLE, "VOCABULARY-UPDATE-ID: " + vocabulary_id);
-            wordList = controller.getWords(vocabulary_id);
-            connectionList = controller.getConnections(vocabulary_id);
+            wordList = service.getWords(vocabulary_id);
+            connectionList = service.getConnections(vocabulary_id);
         }
     }
 

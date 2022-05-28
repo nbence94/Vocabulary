@@ -9,7 +9,6 @@ import android.view.KeyEvent;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -19,7 +18,7 @@ import java.util.Random;
 
 import se.app.vocabulary.MainActivity;
 import se.app.vocabulary.R;
-import se.app.vocabulary.controller.Controller;
+import se.app.vocabulary.controller.Service;
 import se.app.vocabulary.model.Words;
 
 public class QuizActivity extends AppCompatActivity {
@@ -27,7 +26,7 @@ public class QuizActivity extends AppCompatActivity {
     private final String LOG_TITLE = "QuizActivity";
     int vocabulary_id;
     ArrayList<Words> list;
-    Controller controller = new Controller(this);
+    Service service = new Service(this);
 
     //GUI
     TextView title, actual_word, solution_msg, score, num_of_words;
@@ -149,10 +148,10 @@ public class QuizActivity extends AppCompatActivity {
         if(getIntent().hasExtra("id")) {
             vocabulary_id = getIntent().getIntExtra("id", -1);
             Log.i(LOG_TITLE, "QUIZ-MODE: ONLY (" + vocabulary_id + ")");
-            list = controller.getWords(vocabulary_id);
+            list = service.getWords(vocabulary_id);
         } else {
             Log.i(LOG_TITLE, "QUIZ-MODE: ALL");
-            list = controller.getWords();
+            list = service.getWords();
         }
         title.setText(getIntent().getStringExtra("name"));
     }

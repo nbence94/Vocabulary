@@ -13,13 +13,13 @@ import se.app.vocabulary.model.Connection;
 import se.app.vocabulary.model.Vocabulary;
 import se.app.vocabulary.model.Words;
 
-public class Controller {
+public class Service {
 
     private final String LOG_TITLE = "Controller";
     Context context;
     DatabaseHelper dh;
 
-    public Controller(Context context) {
+    public Service(Context context) {
         this.context = context;
         dh = new DatabaseHelper(context);
     }

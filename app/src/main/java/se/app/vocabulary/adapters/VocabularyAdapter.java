@@ -3,7 +3,6 @@ package se.app.vocabulary.adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,9 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 import se.app.vocabulary.R;
-import se.app.vocabulary.controller.Controller;
+import se.app.vocabulary.controller.Service;
 import se.app.vocabulary.model.Vocabulary;
-import se.app.vocabulary.model.Words;
 import se.app.vocabulary.sites.QuizActivity;
 import se.app.vocabulary.sites.VocabularyActivity;
 
@@ -27,13 +25,13 @@ public class VocabularyAdapter extends RecyclerView.Adapter<VocabularyAdapter.My
     ArrayList<Vocabulary> list;
     Context context;
     Activity activity;
-    Controller controller;
+    Service service;
 
     public VocabularyAdapter(Activity activity, Context context, ArrayList<Vocabulary> list) {
         this.context = context;
         this.activity = activity;
         this.list = list;
-        controller = new Controller(context);
+        service = new Service(context);
     }
 
     @NonNull
@@ -50,7 +48,7 @@ public class VocabularyAdapter extends RecyclerView.Adapter<VocabularyAdapter.My
         String element_text = list.get(position).getName();
         holder.title.setText(element_text);
 
-        String number = "" + controller.getNumberOfWords(list.get(position).getId());
+        String number = "" + service.getNumberOfWords(list.get(position).getId());
         holder.amount_of_words.setText(number);
 
         holder.element.setOnClickListener(v -> {

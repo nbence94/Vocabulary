@@ -6,60 +6,112 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
-import java.util.stream.Collectors;
 
 import se.app.vocabulary.adapters.VocabularyAdapter;
-import se.app.vocabulary.controller.Controller;
+import se.app.vocabulary.controller.Service;
 import se.app.vocabulary.model.Vocabulary;
+import se.app.vocabulary.sites.ExerciseActivity;
 import se.app.vocabulary.sites.QuizActivity;
 import se.app.vocabulary.sites.VocabularyActivity;
 
 public class MainActivity extends AppCompatActivity {
 
-    FloatingActionButton add_new_vocabulary_btn, start_complete_quiz_btn;
-    RecyclerView recycler_view;
+    FloatingActionButton mainButton, addNewVocabularyButton, startQuizButton, startExerciseButton;
+    RecyclerView recyclerView;
     VocabularyAdapter adapter;
-    Controller controller = new Controller(this);
+    Service service = new Service(this);
 
     ArrayList<Vocabulary> list = new ArrayList<>();
+
+    //Animáció
+    private Animation rotateOpen;
+    private Animation rotateClose;
+    private Animation toBottom;
+    private Animation fromBottom;
+    boolean clicked = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        add_new_vocabulary_btn = findViewById(R.id.main_add_vocabulary_gui);
-        add_new_vocabulary_btn.setOnClickListener(v -> {
+        rotateOpen = AnimationUtils.loadAnimation(getBaseContext(), R.anim.open);
+        rotateClose = AnimationUtils.loadAnimation(this, R.anim.close);
+        toBottom = AnimationUtils.loadAnimation(this, R.anim.to_bottom);
+        fromBottom = AnimationUtils.loadAnimation(this, R.anim.from_bottom);
+
+        mainButton = findViewById(R.id.main_main_button);
+        mainButton.setOnClickListener(v -> {
+                setVisibility(clicked);
+                setAnimation(clicked);
+                clicked = !clicked;
+        });
+
+        addNewVocabularyButton = findViewById(R.id.main_add_vocabulary_gui);
+        addNewVocabularyButton.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, VocabularyActivity.class);
             startActivity(intent);
         });
 
-        start_complete_quiz_btn = findViewById(R.id.main_start_complete_quiz);
-        start_complete_quiz_btn.setOnClickListener(v -> {
+        startQuizButton = findViewById(R.id.main_start_complete_quiz);
+        startQuizButton.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, QuizActivity.class);
             intent.putExtra("name", "Összesített szavak");
             startActivity(intent);
         });
 
+        startExerciseButton = findViewById(R.id.exercises_btn);
+        startExerciseButton.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, ExerciseActivity.class);
+            intent.putExtra("name", "Mondat gyakorló");
+            startActivity(intent);
+        });
 
-        recycler_view = findViewById(R.id.main_recycler_gui);
+
+
+        recyclerView = findViewById(R.id.main_recycler_gui);
         loadList();
         loadRecyler();
     }
 
+    private void setVisibility(boolean clicked) {
+        if(!clicked) {
+            addNewVocabularyButton.setVisibility(View.GONE);
+            startQuizButton.setVisibility(View.GONE);
+            startExerciseButton.setVisibility(View.GONE);
+        } else {
+            addNewVocabularyButton.setVisibility(View.VISIBLE);
+            startQuizButton.setVisibility(View.VISIBLE);
+            startExerciseButton.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void setAnimation(boolean clicked) {
+        if(!clicked) {
+            addNewVocabularyButton.startAnimation(fromBottom);
+            startQuizButton.startAnimation(fromBottom);
+            startExerciseButton.startAnimation(fromBottom);
+        } else {
+            addNewVocabularyButton.startAnimation(toBottom);
+            startQuizButton.startAnimation(toBottom);
+            startExerciseButton.startAnimation(toBottom);
+        }
+    }
+
     private void loadList() {
-        list = controller.getVocabularies();
-        Log.i("Nevek: ", list.stream().map(Vocabulary::getName).collect(Collectors.joining(",")));
+        list = service.getVocabularies();
     }
 
     private void loadRecyler() {
         adapter = new VocabularyAdapter(this, this, list);
-        recycler_view.setAdapter(adapter);
-        recycler_view.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 }
