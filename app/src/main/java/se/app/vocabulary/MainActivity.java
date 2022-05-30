@@ -35,6 +35,11 @@ public class MainActivity extends AppCompatActivity {
     private Animation rotateClose;
     private Animation toBottom;
     private Animation fromBottom;
+    private Animation toRight;
+    private Animation fromRight;
+    private Animation toDiagonal;
+    private Animation fromDiagonal;
+
     boolean clicked = false;
 
     @Override
@@ -46,6 +51,10 @@ public class MainActivity extends AppCompatActivity {
         rotateClose = AnimationUtils.loadAnimation(this, R.anim.close);
         toBottom = AnimationUtils.loadAnimation(this, R.anim.to_bottom);
         fromBottom = AnimationUtils.loadAnimation(this, R.anim.from_bottom);
+        toRight= AnimationUtils.loadAnimation(this, R.anim.to_right);
+        fromRight = AnimationUtils.loadAnimation(this, R.anim.from_right);
+        toDiagonal = AnimationUtils.loadAnimation(this, R.anim.to_diagonal);
+        fromDiagonal = AnimationUtils.loadAnimation(this, R.anim.from_diagonal);
 
         mainButton = findViewById(R.id.main_main_button);
         mainButton.setOnClickListener(v -> {
@@ -74,8 +83,6 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-
-
         recyclerView = findViewById(R.id.main_recycler_gui);
         loadList();
         loadRecyler();
@@ -83,24 +90,24 @@ public class MainActivity extends AppCompatActivity {
 
     private void setVisibility(boolean clicked) {
         if(!clicked) {
-            addNewVocabularyButton.setVisibility(View.GONE);
-            startQuizButton.setVisibility(View.GONE);
-            startExerciseButton.setVisibility(View.GONE);
-        } else {
             addNewVocabularyButton.setVisibility(View.VISIBLE);
             startQuizButton.setVisibility(View.VISIBLE);
             startExerciseButton.setVisibility(View.VISIBLE);
+        } else {
+            addNewVocabularyButton.setVisibility(View.GONE);
+            startQuizButton.setVisibility(View.GONE);
+            startExerciseButton.setVisibility(View.GONE);
         }
     }
 
     private void setAnimation(boolean clicked) {
         if(!clicked) {
-            addNewVocabularyButton.startAnimation(fromBottom);
-            startQuizButton.startAnimation(fromBottom);
+            addNewVocabularyButton.startAnimation(fromDiagonal);
+            startQuizButton.startAnimation(fromRight);
             startExerciseButton.startAnimation(fromBottom);
         } else {
-            addNewVocabularyButton.startAnimation(toBottom);
-            startQuizButton.startAnimation(toBottom);
+            addNewVocabularyButton.startAnimation(toDiagonal);
+            startQuizButton.startAnimation(toRight);
             startExerciseButton.startAnimation(toBottom);
         }
     }
