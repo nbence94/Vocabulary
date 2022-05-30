@@ -13,10 +13,13 @@ import android.view.animation.AnimationUtils;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import se.app.vocabulary.adapters.VocabularyAdapter;
 import se.app.vocabulary.controller.Service;
+import se.app.vocabulary.data.DatabaseHelper;
 import se.app.vocabulary.model.Vocabulary;
+import se.app.vocabulary.model.Words;
 import se.app.vocabulary.sites.ExerciseActivity;
 import se.app.vocabulary.sites.QuizActivity;
 import se.app.vocabulary.sites.VocabularyActivity;
@@ -27,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     VocabularyAdapter adapter;
     Service service = new Service(this);
+    DatabaseHelper dh = new DatabaseHelper(this);
 
     ArrayList<Vocabulary> list = new ArrayList<>();
 
@@ -58,9 +62,18 @@ public class MainActivity extends AppCompatActivity {
 
         mainButton = findViewById(R.id.main_main_button);
         mainButton.setOnClickListener(v -> {
-                setVisibility(clicked);
-                setAnimation(clicked);
-                clicked = !clicked;
+            setVisibility(clicked);
+            setAnimation(clicked);
+            clicked = !clicked;
+
+            //Felesleges szavak törlése (Amik nincsenek szótárakba (bugfix))
+            /*List<Words> a = service.getData("SELECT * FROM Words WHERE ID NOT IN (" +
+                    "SELECT wordID FROM Connection);");
+
+            for(Words w : a) {
+                dh.delete(dh.WORDS, "ID", String.valueOf(w.getId()));
+            }*/
+
         });
 
         addNewVocabularyButton = findViewById(R.id.main_add_vocabulary_gui);
@@ -105,10 +118,18 @@ public class MainActivity extends AppCompatActivity {
             addNewVocabularyButton.startAnimation(fromDiagonal);
             startQuizButton.startAnimation(fromRight);
             startExerciseButton.startAnimation(fromBottom);
+
+            mainButton.startAnimation(rotateOpen);
+            //getString(R.string.vocabulary_update)
+            //mainButton.setImageDrawable(R.drawable.x_icon);
+            mainButton.setImageResource(R.drawable.x_icon);
         } else {
             addNewVocabularyButton.startAnimation(toDiagonal);
             startQuizButton.startAnimation(toRight);
             startExerciseButton.startAnimation(toBottom);
+
+            mainButton.startAnimation(rotateClose);
+            mainButton.setImageResource(R.drawable.menu_icon);
         }
     }
 
