@@ -88,6 +88,11 @@ public class Service {
         return list.size();
     }
 
+    public int getNumberOfWords() {
+        ArrayList<Words> list = getWords();
+        return list.size();
+    }
+
     public ArrayList<Words> getData(String query) {
         ArrayList<Words> list = new ArrayList<>();
         Cursor c = dh.getDatas(query);

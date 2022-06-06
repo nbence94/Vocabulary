@@ -7,6 +7,19 @@
     tools:context=".sites.ExerciseActivity"
     android:background="@drawable/bg1" >
 
+    <EditText
+        android:id="@+id/exercise_num_of_words"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="84dp"
+        android:hint="Szavak száma"
+        android:textSize="25sp"
+        app:layout_constraintEnd_toStartOf="@+id/generate_words_gui"
+        app:layout_constraintHorizontal_bias="0.196"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <ImageView
         android:id="@+id/exercise_back_btn_gui"
         android:layout_width="wrap_content"
@@ -44,14 +57,13 @@
 
     <Button
         android:id="@+id/generate_words_gui"
-        android:layout_width="200dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="84dp"
+        android:layout_marginEnd="44dp"
         android:text="GIMME"
         android:textSize="25sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/exercise_title_gui" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

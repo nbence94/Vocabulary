@@ -7,9 +7,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -35,6 +38,7 @@ public class ExerciseActivity extends AppCompatActivity {
     ImageView backBtn;
     Button generate;
     RecyclerView recyclerView;
+    EditText numbersInput;
 
     ExerciseAdapter adapter;
 
@@ -43,10 +47,14 @@ public class ExerciseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exercise);
 
+        //Maradjon aktív a képernyő
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
         title = findViewById(R.id.exercise_title_gui);
         backBtn = findViewById(R.id.exercise_back_btn_gui);
         generate = findViewById(R.id.generate_words_gui);
         recyclerView = findViewById(R.id.exercise_recycler_gui);
+        numbersInput = findViewById(R.id.exercise_num_of_words);
 
         getIntentData();
 
@@ -58,10 +66,19 @@ public class ExerciseActivity extends AppCompatActivity {
         });
 
         generate.setOnClickListener(v -> {
+            int numOfWords = 5;
+            if(!numbersInput.getText().toString().equals("")) {
+                numOfWords = Integer.parseInt(numbersInput.getText().toString());
+                if(numOfWords >= wordList.size()) {
+                    Toast.makeText(this, "Nincs ennyi szó", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+            }
+
             chosenWords = new ArrayList<>();
             Random rnd = new Random();
             int randomId;
-            for(int i = 0; i < 5; i++) {
+            for(int i = 0; i < numOfWords; i++) {
                 randomId = rnd.nextInt(wordList.size() - 1) + 1;
                 while(chosenWords.contains(wordList.get(randomId))) randomId = rnd.nextInt(wordList.size() - 1) + 1;
                 chosenWords.add(wordList.get(randomId));

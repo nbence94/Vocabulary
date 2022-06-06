@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -84,6 +85,10 @@ public class MainActivity extends AppCompatActivity {
 
         startQuizButton = findViewById(R.id.main_start_complete_quiz);
         startQuizButton.setOnClickListener(v -> {
+            if(service.getNumberOfWords() == 0) {
+                Toast.makeText(this, "Nincs elég szó", Toast.LENGTH_SHORT).show();
+                return;
+            }
             Intent intent = new Intent(MainActivity.this, QuizActivity.class);
             intent.putExtra("name", "Összesített szavak");
             startActivity(intent);
@@ -91,6 +96,10 @@ public class MainActivity extends AppCompatActivity {
 
         startExerciseButton = findViewById(R.id.exercises_btn);
         startExerciseButton.setOnClickListener(v -> {
+            if(service.getNumberOfWords() <= 6) {
+                Toast.makeText(this, "Nincs elég szó", Toast.LENGTH_SHORT).show();
+                return;
+            }
             Intent intent = new Intent(MainActivity.this, ExerciseActivity.class);
             intent.putExtra("name", "Mondat gyakorló");
             startActivity(intent);

@@ -45,6 +45,9 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.MyView
         String element_text;
         element_text = list.get(position).getEnglish();
         holder.title.setText(element_text);
+
+        String hungarian_text = list.get(position).getHungarian();
+        holder.element.setTooltipText(hungarian_text);
     }
 
     @Override
